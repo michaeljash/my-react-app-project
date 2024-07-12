@@ -1,20 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 
-const UserList = () => {
+import React, { useState, useEffect } from 'react';
+
+function UserList() {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
     fetchUsers();
   }, []);
 
-  const fetchUsers = async () => {
-    try {
-      const response = await axios.get('http://127.0.0.1:5000/users');
-      setUsers(response.data);
-    } catch (error) {
-      console.error('Error fetching users:', error);
-    }
+  const fetchUsers = () => {
+    fetch('http://127.0.0.1:5000/users')
+      .then(response => response.json())
+      .then(data => {
+        setUsers(data);
+      })
+      .catch(error => {
+        console.error('Error fetching users:', error);
+      });
   };
 
   return (
@@ -29,6 +31,6 @@ const UserList = () => {
       </ul>
     </div>
   );
-};
+}
 
 export default UserList;
