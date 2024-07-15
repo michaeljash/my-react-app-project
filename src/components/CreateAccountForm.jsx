@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const Login = ({ setLoggedIn }) => {
+const CreateAccountForm = () => {
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -10,30 +11,38 @@ const Login = ({ setLoggedIn }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const userData = { username, email, password };
+
     try {
-      const response = await fetch('http://127.0.0.1:5000/login', {
+      const response = await fetch('http://127.0.0.1:5000/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify(userData),
       });
 
       if (response.ok) {
-        const data = await response.json();
-        localStorage.setItem('token', data.token);
-        setLoggedIn(true);
-        navigate('/'); // Redirect to the Home page after logging in
+        navigate('/'); 
       } else {
-        setError('Invalid email or password');
+        setError('Failed to create account');
       }
     } catch (error) {
-      setError('Error logging in');
+      setError('Error creating account');
     }
   };
 
   return (
-    <div className="container">
-      <h2>Login</h2>
+    <div className="create-account-form">
+      <h2>Create Account</h2>
       <form onSubmit={handleSubmit}>
+        <div>
+          <label>Username:</label>
+          <input
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
+        </div>
         <div>
           <label>Email:</label>
           <input
@@ -52,11 +61,11 @@ const Login = ({ setLoggedIn }) => {
             required
           />
         </div>
-        <button type="submit">Login</button>
+        <button type="submit">Create Account</button>
       </form>
       {error && <p>{error}</p>}
     </div>
   );
 };
 
-export default Login;
+export default CreateAccountForm;

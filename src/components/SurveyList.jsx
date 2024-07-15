@@ -1,5 +1,6 @@
 // src/components/SurveyList.jsx
 
+// src/components/SurveyList.jsx
 import React, { useState, useEffect } from 'react';
 
 function SurveyList() {
@@ -21,7 +22,7 @@ function SurveyList() {
   };
 
   return (
-    <div>
+    <div className="survey-list">
       <h2>Survey List</h2>
       <ul>
         {surveys.map(survey => (
